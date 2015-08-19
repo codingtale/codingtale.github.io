@@ -1,0 +1,42 @@
+Simple query using group clause for 1 million records resulting in final
+list of 27 records:
+1st time taken => 0.43053775
+
+Same query through Stored procedure:
+1st time taken => 0.43341600
+
+So in terms of time, first time they are very close.
+Profiling comparison for both can be seen figure no_cache_comparison.png
+where left one is simple inline query and right one is stored procedure
+query.
+
+There are some actions which are extra in the inline query:
+1. freeing items
+2. logging slow query
+3. cleaning up
+
+Running both second time retrieve data from cache taking
+0.00048025 => simple query
+0.00036625 => stored procedure
+
+Profiling comparison for both can be seen figure cache_comparison.png
+where left one is simple inline query and right one is stored procedure
+query.
+
+Here too there are some extra actions for inline query:
+1. logging slow query
+2. cleaning up
+
+Taking into consideration the approximate equal timing of both the type of
+queries and that on second time execution both use cache, there is not
+much difference. But given the fact that stored procedures are compiled
+and stored, will be efficient for the db.
+
+Also considering
+https://sachinkumaram.wordpress.com/2011/03/01/stored-procedures-advantages-disadvantages/,
+the advantages outweigh the disadvantages, I think.
+
+Extra References:
+====
+http://www.seguetech.com/blog/06/04/Advantage-drawbacks-stored-procedures-processing-data
+http://www.linuxjournal.com/article/9652
